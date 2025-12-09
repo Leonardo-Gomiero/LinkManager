@@ -53,15 +53,10 @@ public static class ServiceCollectionExtensions
             {
                 OnAuthenticationFailed = context =>
                 {
-                    Console.WriteLine("\n\n===================================");
-                    Console.WriteLine("🛑 ERRO DE AUTENTICAÇÃO DETECTADO:");
-                    Console.WriteLine(context.Exception.Message);
-                    Console.WriteLine("===================================\n\n");
                     return Task.CompletedTask;
                 },
                 OnTokenValidated = context =>
                 {
-                    Console.WriteLine("\n\n✅ TOKEN ACEITO! O usuário é válido.\n\n");
                     return Task.CompletedTask;
                 }
             };
