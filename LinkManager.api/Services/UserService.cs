@@ -52,6 +52,33 @@ public class UserService
         return new UserResponse(user.Id, user.Email, user.PageSlug);
     }
 
+    public async Task<UserResponse?> UpdateAsync(int id, RegisterUserRequest request)
+    {
+        var user = await _context.Users.FindAsync(id);
+        if (user is null) return null;
+
+        var emailExists = await _context.Users
+            .AnyAsync(u => u.Email == request.Email && u.Id != id);
+        
+        var slugExists = await _context.Users
+            .AnyAsync(u => u.PageSlug == request.PageSlug && u.Id != id);
+
+        if (emailExists || slugExists) return null;
+
+        user.Email = request.Email;
+        user.PageSlug = request.PageSlug;
+        
+        if (!string.IsNullOrWhiteSpace(request.Password))
+        {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+        }
+
+        _context.Users.Update(user);
+        await _context.SaveChangesAsync();
+
+        return new UserResponse(user.Id, user.Email, user.PageSlug);
+    }
+
     public async Task<LoginResponse?> LoginAsync(LoginRequest request)
     {
         var user = await _context.Users.SingleOrDefaultAsync(u => u.Email == request.Email);

@@ -52,4 +52,22 @@ public class LinkService
         await _context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<LinkResponse?> UpdateAsync(int id, int userId, CreateLinkRequest request)
+    {
+        var link = await _context.Links.FindAsync(id);
+
+        if (link is null || link.UserId != userId)
+        {
+            return null;
+        }
+
+        link.Title = request.Title;
+        link.Url = request.Url;
+
+        _context.Links.Update(link);
+        await _context.SaveChangesAsync();
+
+        return new LinkResponse(link.Id, link.Title, link.Url);
+    }
 }

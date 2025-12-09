@@ -13,6 +13,7 @@ public static class LinkEndpoints
 
         linksGroup.MapPost("/", CreateLink);
         linksGroup.MapGet("/", GetAllLinks);
+        linksGroup.MapPut("/{id}", UpdateLink);
         linksGroup.MapDelete("/{id}", DeleteLink);
 
         return app;
@@ -34,6 +35,17 @@ public static class LinkEndpoints
 
         var links = await linkService.GetAllAsync(userId.Value);
         return Results.Ok(links);
+    }
+
+    private static async Task<IResult> UpdateLink(LinkService linkService, int id, CreateLinkRequest request, ClaimsPrincipal user)
+    {
+        var userId = user.GetUserId();
+        if (userId is null) return Results.Unauthorized();
+
+        var updatedLink = await linkService.UpdateAsync(id, userId.Value, request);
+        if (updatedLink is null) return Results.NotFound();
+
+        return Results.Ok(updatedLink);
     }
 
     private static async Task<IResult> DeleteLink(LinkService linkService, int id, ClaimsPrincipal user)

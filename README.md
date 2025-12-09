@@ -76,15 +76,17 @@ This API is secured with JWT:
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
 | `POST` | `/users` | Register a new user account | ❌ No |
-| `POST` | `/login` | Authenticate and retrieve JWT Token | ❌ No |
 | `GET` | `/users/{id}` | Get public user details | ❌ No |
+| `PUT` | `/users/{id}` | Update user email, slug, or password | ❌ No |
+| `POST` | `/login` | Authenticate and retrieve JWT Token | ❌ No |
 
 ### 🔗 Link Management
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---------------|
-| `GET` | `/links` | List all links for the logged user | ✅ Yes |
 | `POST` | `/links` | Create a new link | ✅ Yes |
+| `GET` | `/links` | List all links for the logged user | ✅ Yes |
+| `PUT` | `/links/{id}` | Update a specific link | ✅ Yes |
 | `DELETE` | `/links/{id}` | Delete a specific link | ✅ Yes |
 
 ## 🧪 Testing with cURL

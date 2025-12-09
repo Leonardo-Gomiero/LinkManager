@@ -9,6 +9,7 @@ public static class UserEndpoints
     {
         app.MapPost("/users", RegisterUser);
         app.MapGet("/users/{id}", GetUserById);
+        app.MapPut("/users/{id}", UpdateUser);
         app.MapPost("/login", Login);
 
         return app;
@@ -31,6 +32,19 @@ public static class UserEndpoints
     {
         var user = await userService.GetByIdAsync(id);
         return user is null ? Results.NotFound() : Results.Ok(user);
+    }
+
+    private static async Task<IResult> UpdateUser(UserService userService, int id, RegisterUserRequest request)
+    {
+        if (string.IsNullOrWhiteSpace(request.Email))
+            return Results.BadRequest("Invalid data.");
+
+        var updatedUser = await userService.UpdateAsync(id, request);
+
+        if (updatedUser is null)
+            return Results.Conflict("Email or Slug already exists, or user not found.");
+
+        return Results.Ok(updatedUser);
     }
 
     private static async Task<IResult> Login(UserService userService, LoginRequest request)
