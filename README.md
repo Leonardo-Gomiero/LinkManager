@@ -65,7 +65,7 @@ dotnet watch run
 
 The interactive Swagger documentation is available when running the API locally in development mode. Access the link below (replace the port if necessary):
 
-[Abrir Swagger UI — http://localhost:5035/swagger/index.html](http://localhost:5035/swagger/index.html)
+[Open Swagger UI — http://localhost:5035/swagger/index.html](http://localhost:5035/swagger/index.html)
 
 ## 🔑 Authentication Flow
 
